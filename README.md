@@ -1,4 +1,4 @@
-小沙雕Java混淆器
+小沙雕Java混淆器 | XiaoShadiao Obfuscator
 
 支持:
     字符串混淆
