@@ -27,7 +27,7 @@ ummmm, 贴几张图吧, 就拿我的[Hypixel Helper Mod](https://hypixelhelper.p
 ![image](https://github.com/user-attachments/assets/d1631dd7-5187-47b3-8565-cdcb3ca1978f)
 ![image](https://github.com/user-attachments/assets/6256dd8d-b9b5-4131-abd4-21368bbf82fa)
 
-混淆后 (ProGuard + XiaoShadiao-Obfuscator)
+混淆后 ([ProGuard](https://github.com/Guardsquare/proguard) + XiaoShadiao-Obfuscator)
 
 ![image](https://github.com/user-attachments/assets/35f6e776-5f3c-4dec-a0a1-d0cf1f2eec3b)
 ![image](https://github.com/user-attachments/assets/7980faf1-2b53-414e-ad2e-879e3add1e6a)
