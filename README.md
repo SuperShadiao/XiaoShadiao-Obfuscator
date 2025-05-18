@@ -10,6 +10,9 @@
 - 垃圾代码混淆
 - 垃圾try catch block混淆
 - 垃圾switch case block混淆
+- JVM反调试
+- Label重排
+- 字段方法顺序重排
 
 - [!] 在类文件版本52 (JDK1.8)上食用效果更佳.jpg
 
