@@ -19,9 +19,9 @@
 
 # 关于
 小沙雕初次接触ASM，
-如果有bug请[反馈](https://hypixelhelper.pages.dev/qqg)给小沙雕~
+如果有bug请[反馈](https://xiaoshadiao.club/qqg)给小沙雕~
 
-ummmm, 贴几张图吧, 就拿我的[Hypixel Helper Mod](https://hypixelhelper.pages.dev)举例子吧~
+ummmm, 贴几张图吧, 就拿我的[Hypixel Helper Mod](https://xiaoshadiao.club/projects)举例子吧~
 
 混淆前
 
