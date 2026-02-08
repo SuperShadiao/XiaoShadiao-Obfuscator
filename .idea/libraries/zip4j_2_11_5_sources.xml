@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="zip4j-2.11.5-sources">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/zip4j-2.11.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/zip4j-2.11.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="XiaoShadiaoObf:jar">
+    <output-path>$PROJECT_DIR$/</output-path>
+    <root id="archive" name="XiaoShadiaoObf.jar">
+      <element id="module-output" name="ObfTest" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/NEW_ASM/asm-9.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/NEW_ASM/asm-tree-9.7.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/NEW_ASM/asm-analysis-9.7.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/NEW_ASM/asm-util-9.7.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

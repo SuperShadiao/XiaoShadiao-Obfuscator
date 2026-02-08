@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="NEW_ASM">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/NEW_ASM" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/NEW_ASM" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/NEW_ASM" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/NEW_ASM" recursive="false" type="SOURCES" />
+  </library>
+</component>
