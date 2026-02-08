@@ -11,7 +11,7 @@
 - 垃圾try catch block混淆
 - 垃圾switch case block混淆
 - JVM反调试
-- Label重排
+- Label重排 (不稳定)
 - 字段方法顺序重排
 - 方法异常标签移除
 
