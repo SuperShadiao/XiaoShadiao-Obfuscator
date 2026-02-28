@@ -7,10 +7,10 @@ public class TaskThread extends Thread {
     private static int threadCount = 0;
     private boolean isRunning = false;
     private Task task;
-    private final ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(1000);
+    private final ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(5000);
 
     public TaskThread() {
-        setPriority(MIN_PRIORITY);
+        setPriority(MAX_PRIORITY);
         setName("TaskThread-" + (++threadCount));
         start();
     }

@@ -10,8 +10,6 @@ import pers.XiaoShadiao.obfuscator.interfaces.IVisitor;
 import pers.XiaoShadiao.obfuscator.interfaces.IVisitorFactory;
 import pers.XiaoShadiao.obfuscator.taskmanager.Task;
 import pers.XiaoShadiao.obfuscator.taskmanager.TaskManager;
-import pers.XiaoShadiao.obfuscator.taskmanager.TaskThread;
-import pers.XiaoShadiao.obfuscator.utils.ClassWriter1;
 import pers.XiaoShadiao.obfuscator.utils.Utils;
 import pers.XiaoShadiao.obfuscator.utils.customclassloader.XSDURLClassLoader;
 import pers.XiaoShadiao.obfuscator.visitor.*;
@@ -21,7 +19,6 @@ import pers.XiaoShadiao.obfuscator.visitor.visitorfactory.VisitorFactory;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.util.*;
@@ -41,11 +38,13 @@ public class Main {
 
     static {
         try {
-            directionary = new File(URLDecoder.decode(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8")).getParentFile();
-        } catch (UnsupportedEncodingException e) {
+            File thisFile = new File(URLDecoder.decode(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8"));
+            directionary = thisFile.getParentFile();
+            loader = new XSDURLClassLoader(new URL[0], Main.class.getClassLoader());
+            loader.addURL(thisFile.toURI().toURL());
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        loader = new XSDURLClassLoader(new URL[0], Main.class.getClassLoader());
     }
 
     public static final String version = "2.0.0";
