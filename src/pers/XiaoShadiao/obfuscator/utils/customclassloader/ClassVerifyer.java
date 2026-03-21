@@ -2,10 +2,7 @@ package pers.XiaoShadiao.obfuscator.utils.customclassloader;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.analysis.Analyzer;
-import org.objectweb.asm.tree.analysis.AnalyzerException;
-import org.objectweb.asm.tree.analysis.BasicValue;
-import org.objectweb.asm.tree.analysis.BasicVerifier;
+import org.objectweb.asm.tree.analysis.*;
 import pers.XiaoShadiao.NMSLException;
 import pers.XiaoShadiao.obfuscator.config.Config;
 import pers.XiaoShadiao.obfuscator.visitor.AbstractVisitor;
@@ -90,17 +87,18 @@ public class ClassVerifyer {
         }
         try(VerifyerClassLoader classLoader = new VerifyerClassLoader()) {
             ClassNode classNode = AbstractVisitor.byteToClassNode(bytes);
+//            SimpleVerifier simpleVerifier = new SimpleVerifier();
+//            simpleVerifier.setClassLoader(classLoader);
+//            Analyzer<BasicValue> analyzer = new Analyzer<>(simpleVerifier);
             Analyzer<BasicValue> analyzer = new Analyzer<>(new BasicVerifier());
             for (MethodNode method : classNode.methods) {
                 analyzer.analyze(classNode.name, method);
             }
 
             Class<?> cla$$ = classLoader.define(bytes);
-            // if(!cla$$.getName().equals("XiaoShadiao")) {
             cla$$.getDeclaredMethods();
             cla$$.newInstance();
-            // }
-        } catch (AnalyzerException e) {
+        } catch(AnalyzerException e) {
             throw new RuntimeException(e);
         } catch(Throwable e) {
             if(Config.dontverify) {

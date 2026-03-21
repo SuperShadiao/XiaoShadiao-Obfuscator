@@ -4,11 +4,15 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles.Lookup;
 
 import pers.XiaoShadiao.NMSLException;
+import pers.XiaoShadiao.obfuscator.Main;
 import sun.misc.Unsafe;
 
 import java.lang.invoke.MethodType;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -80,29 +84,37 @@ public class XiaoShadiao implements Serializable {
 
 		_________ = b;
 
-		System.out.println("======================================================");
-		System.out.println("                                                      ");
-		System.out.println("  X   X  III   AAA   OOOOO                            ");
-		System.out.println("   X X    I   A   A  O   O                            ");
-		System.out.println("    X     I   AAAAA  O   O                            ");
-		System.out.println("   X X    I   A   A  O   O                            ");
-		System.out.println("  X   X  III  A   A  OOOOO                            ");
-		System.out.println("                                                      ");
-		System.out.println("          SSSS  H   H  AAA     DDDD  III  AAA  OOOOO  ");
-		System.out.println("         S      H   H A   A    D   D  I  A   A O   O  ");
-		System.out.println("          SSSS  HHHHH AAAAA    D   D  I  AAAAA O   O  ");
-		System.out.println("              S H   H A   A    D   D  I  A   A O   O  ");
-		System.out.println("          SSSS  H   H A   A    DDDD  III A   A OOOOO  ");
-		System.out.println("                                                      ");
-		System.out.println("             XiaoShadiao     Obfuscator               ");
-		System.out.println("                                                      ");
-		System.out.println("                                   ---by XiaoShadiao  ");
-		System.out.println("                                                      ");
-		System.out.println("  QQ Group:  https://xiaoshadiao.club/qqg             ");
-		System.out.println("  Download:  https://xiaoshadiao.club/obfdownload     ");
-		System.out.println("  Bilibili:  https://xiaoshadiao.club/xsdb            ");
-		System.out.println("                                                      ");
-		System.out.println("======================================================");
+        boolean flag = false;
+        try {
+            flag = Optional.ofNullable(Main.class.getProtectionDomain()).map(ProtectionDomain::getCodeSource).map(CodeSource::getLocation).map(URL::getPath).isPresent();
+        } catch(Throwable ignored) {
+
+        }
+        if (!flag) {
+            System.out.println("======================================================");
+            System.out.println("                                                      ");
+            System.out.println("  X   X  III   AAA   OOOOO                            ");
+            System.out.println("   X X    I   A   A  O   O                            ");
+            System.out.println("    X     I   AAAAA  O   O                            ");
+            System.out.println("   X X    I   A   A  O   O                            ");
+            System.out.println("  X   X  III  A   A  OOOOO                            ");
+            System.out.println("                                                      ");
+            System.out.println("          SSSS  H   H  AAA     DDDD  III  AAA  OOOOO  ");
+            System.out.println("         S      H   H A   A    D   D  I  A   A O   O  ");
+            System.out.println("          SSSS  HHHHH AAAAA    D   D  I  AAAAA O   O  ");
+            System.out.println("              S H   H A   A    D   D  I  A   A O   O  ");
+            System.out.println("          SSSS  H   H A   A    DDDD  III A   A OOOOO  ");
+            System.out.println("                                                      ");
+            System.out.println("             XiaoShadiao     Obfuscator               ");
+            System.out.println("                                                      ");
+            System.out.println("                                   ---by XiaoShadiao  ");
+            System.out.println("                                                      ");
+            System.out.println("  QQ Group:  https://xiaoshadiao.club/qqg             ");
+            System.out.println("  Download:  https://xiaoshadiao.club/obfdownload     ");
+            System.out.println("  Bilibili:  https://xiaoshadiao.club/xsdb            ");
+            System.out.println("                                                      ");
+            System.out.println("======================================================");
+        }
 	}
 	
 	public static Object 最喜欢玩原神了(Object lookup, Object idk, Object mt, Object type, Object key, Object clazz, Object method, Object des) {
