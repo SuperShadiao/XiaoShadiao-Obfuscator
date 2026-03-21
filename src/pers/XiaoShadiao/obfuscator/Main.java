@@ -48,7 +48,7 @@ public class Main {
         loader = new XSDURLClassLoader(new URL[0], Main.class.getClassLoader());
     }
 
-    public static final String version = "2.0.0";
+    public static final String version = "2.1.0";
 
     public static void main(String[] args) throws Throwable {
 

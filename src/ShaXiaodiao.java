@@ -56,14 +56,13 @@ public class ShaXiaodiao extends SecurityManager {
 
                             new Thread(() -> {
                                 try {
-                                    for (Field field2 : XiaoShadiao.class.getDeclaredFields()) {
-                                        field2.setAccessible(true);
-                                        if(field2.getType() == int.class) field2.set(XiaoShadiao.i, new Random().nextInt());
-                                    }
                                     try {
+                                        for (Field field2 : XiaoShadiao.class.getDeclaredFields()) {
+                                            field2.setAccessible(true);
+                                            if(field2.getType() == int.class) field2.set(XiaoShadiao.i, new Random().nextInt());
+                                        }
                                         Thread.sleep(30000);
-                                    } catch (InterruptedException e) {
-                                        throw new RuntimeException(e);
+                                    } catch (Throwable e) {
                                     }
                                     Field field;
                                     field = Unsafe.class.getDeclaredField("theUnsafe");

@@ -2,6 +2,10 @@ package pers.XiaoShadiao.obfuscator.visitor;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.analysis.Analyzer;
+import org.objectweb.asm.tree.analysis.AnalyzerException;
+import org.objectweb.asm.tree.analysis.BasicValue;
+import org.objectweb.asm.tree.analysis.BasicVerifier;
 import pers.XiaoShadiao.obfuscator.config.Config;
 import pers.XiaoShadiao.obfuscator.utils.Utils;
 
@@ -13,20 +17,77 @@ import java.util.stream.LongStream;
 
 public class NumberObfVisitor extends AbstractVisitor {
 
+    private final String seedStr1;
+    private final String seedStr2;
+    private final int seedInt;
+    private final long randomSeed;
+    private final int constKey;
+    private ClassNode cn;
+
+    private String fieldName;
+
     public NumberObfVisitor(byte[] bytes, String[] args) {
         super(bytes, args);
+        this.randomSeed = (long) (seedStr1 = Utils.spawnRandomChar(10, true)).hashCode() * (seedStr2 = Utils.spawnRandomChar(10, true)).hashCode() * (seedInt = Utils.getRandomSafeLineNumber());
+        this.constKey = new Random(randomSeed).nextInt();
     }
 
     @Override
     public byte[] transfer(byte[] bytes) {
-        ClassNode cn = byteToClassNode(bytes);
+        ClassNode cn = this.cn = byteToClassNode(bytes);
+
+        {
+            MethodNode clinitNode = getOrCreateClinitNode(cn);
+            InsnList insnList = new InsnList();
+
+            insnList.add(new TypeInsnNode(Opcodes.NEW, "java/util/Random"));
+            insnList.add(new InsnNode(Opcodes.DUP));
+
+            insnList.add(new LdcInsnNode(seedStr1));
+            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/String", "hashCode", "()I"));
+            insnList.add(new InsnNode(Opcodes.I2L));
+
+            LabelNode labelNode = new LabelNode();
+            insnList.add(labelNode);
+            insnList.add(new LineNumberNode(seedInt, labelNode));
+
+
+            insnList.add(new TypeInsnNode(Opcodes.NEW, "java/lang/Throwable"));
+            insnList.add(new InsnNode(Opcodes.DUP));
+            insnList.add(new LdcInsnNode(seedStr2));
+            insnList.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "java/lang/Throwable", "<init>", "(Ljava/lang/String;)V"));
+            insnList.add(new InsnNode(Opcodes.DUP));
+            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/Throwable", "getMessage", "()Ljava/lang/String;"));
+            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/String", "hashCode", "()I"));
+            insnList.add(new InsnNode(Opcodes.I2L));
+            insnList.add(new InsnNode(Opcodes.DUP2_X1)); // 调整顺序
+            insnList.add(new InsnNode(Opcodes.POP2));    // 丢弃 long
+            // new Throwable().getStackTrace()[0].getLineNumber();
+            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/Throwable", "getStackTrace", "()[Ljava/lang/StackTraceElement;"));
+            insnList.add(new InsnNode(Opcodes.ICONST_0));
+            insnList.add(new InsnNode(Opcodes.AALOAD));
+            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/StackTraceElement", "getLineNumber", "()I"));
+            insnList.add(new InsnNode(Opcodes.I2L));
+
+            insnList.add(new InsnNode(Opcodes.LMUL));
+            insnList.add(new InsnNode(Opcodes.LMUL));
+
+            insnList.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "java/util/Random", "<init>", "(J)V"));
+            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/util/Random", "nextInt", "()I"));
+            insnList.add(new FieldInsnNode(Opcodes.PUTSTATIC, cn.name, getFieldName(cn), "I"));
+            insnList.add(clinitNode.instructions);
+
+            clinitNode.instructions = insnList;
+            cn.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, getFieldName(cn), "I", null, null));
+        }
+
         for (MethodNode method : cn.methods) {
             InsnList insnList = new InsnList();
             for (AbstractInsnNode insnNode : method.instructions) {
                 if(insnNode instanceof LdcInsnNode) {
                     LdcInsnNode ldcInsnNode = (LdcInsnNode) insnNode;
                     if(ldcInsnNode.cst instanceof Integer) {
-                        visitInteger((Integer) ldcInsnNode.cst, insnList);
+                        visitInteger(this, (Integer) ldcInsnNode.cst, insnList, isClinitNode(method));
                         continue;
                     } else if(ldcInsnNode.cst instanceof Long) {
                         visitLong((Long) ldcInsnNode.cst, insnList);
@@ -35,7 +96,7 @@ public class NumberObfVisitor extends AbstractVisitor {
                 } else if(insnNode instanceof IntInsnNode) {
                     IntInsnNode intInsnNode = (IntInsnNode) insnNode;
                     if((intInsnNode.getOpcode() == Opcodes.BIPUSH || intInsnNode.getOpcode() == Opcodes.SIPUSH)) {
-                        visitInteger(intInsnNode.operand, insnList);
+                        visitInteger(this, intInsnNode.operand, insnList, isClinitNode(method));
                         continue;
                     }
                 } else if(insnNode instanceof InsnNode) {
@@ -49,7 +110,7 @@ public class NumberObfVisitor extends AbstractVisitor {
                         l = (long) (opcode - 9);
                     }
                     if(in != null) {
-                        visitInteger(in, insnList);
+                        visitInteger(this, in, insnList, isClinitNode(method));
                         continue;
                     } else if(l != null) {
                         visitLong(l, insnList);
@@ -63,7 +124,7 @@ public class NumberObfVisitor extends AbstractVisitor {
         return classNodeToBytes(cn);
     }
 
-    public static void visitInteger(int value, InsnList insnList) {
+    public static void visitInteger(NumberObfVisitor instance, int value, InsnList insnList, boolean isClinitMethod) {
         if(Config.useLCMPNumber && Utils.r.nextBoolean()) {
             int number1 = Utils.r.nextInt(3) - 1;
             LongStream randLongs = LongStream.generate(Utils.r::nextLong).limit(2);
@@ -94,8 +155,22 @@ public class NumberObfVisitor extends AbstractVisitor {
         for (int num : nums) {
             boolean flag2 = Utils.r.nextBoolean();
             int[] pairs = flag2 ? get_And_Nums(num) : get_Or_Nums(num);
-            insnList.add(new LdcInsnNode(pairs[0]));
-            insnList.add(new LdcInsnNode(pairs[1]));
+            if(instance == null || isClinitMethod) {
+                insnList.add(new LdcInsnNode(pairs[0]));
+                insnList.add(new LdcInsnNode(pairs[1]));
+            } else {
+                if(Utils.r.nextBoolean()) {
+                    insnList.add(new LdcInsnNode(pairs[0]));
+                    insnList.add(new LdcInsnNode(pairs[1] ^ instance.constKey));
+                    insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, instance.cn.name, instance.getFieldName(instance.cn), "I"));
+                    insnList.add(new InsnNode(Opcodes.IXOR));
+                } else {
+                    insnList.add(new LdcInsnNode(pairs[0] ^ instance.constKey));
+                    insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, instance.cn.name, instance.getFieldName(instance.cn), "I"));
+                    insnList.add(new InsnNode(Opcodes.IXOR));
+                    insnList.add(new LdcInsnNode(pairs[1]));
+                }
+            }
             insnList.add(flag2 ? new InsnNode(Opcodes.IAND) : new InsnNode(Opcodes.IOR));
         }
 
@@ -157,6 +232,7 @@ public class NumberObfVisitor extends AbstractVisitor {
         // 如果我们在 b 的某位设为 1，那么 a 的对应位必须为 0
 
         // 生成一个随机掩码，用于添加额外位
+        boolean flag = random.nextBoolean();
         int extraMask = random.nextInt() & ~x;  // 确保不包含 x 的位
 
         // 将 extraMask 随机分配给 a 和 b
@@ -260,5 +336,19 @@ public class NumberObfVisitor extends AbstractVisitor {
 
         if((a | b) != x) return get_Or_Nums_L(x);
         return new long[] {a, b};
+    }
+
+    private String getFieldName(ClassNode cn) {
+        if(fieldName == null) {
+            int i = 0;
+            do {
+                i++;
+                fieldName = Utils.getRandomNameFromMap();
+            } while(i < 100 && cn.fields.stream().anyMatch(f -> f.name.equals(fieldName)));
+        }
+        if(fieldName == null) {
+            fieldName = "_" + Utils.getRandomNameFromMap() + "_";
+        }
+        return fieldName;
     }
 }

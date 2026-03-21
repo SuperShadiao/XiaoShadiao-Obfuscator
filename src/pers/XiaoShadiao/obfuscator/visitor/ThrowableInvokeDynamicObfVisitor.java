@@ -134,7 +134,7 @@ public class ThrowableInvokeDynamicObfVisitor extends InvokeDynamicObfVisitor {
                 if(Config.visitorFollowCmdLineOrder) {
                     insnList.add(new LdcInsnNode(entry.getValue()));// mv2.visitLdcInsn(entry.getValue());
                 } else {
-                    NumberObfVisitor.visitInteger(entry.getValue(), insnList);
+                    NumberObfVisitor.visitInteger(null, entry.getValue(), insnList, isClinitNode(clinitNode));
                 }
 
                 insnList.add(new TypeInsnNode(Opcodes.NEW, "XiaoShadiao"));
@@ -144,7 +144,7 @@ public class ThrowableInvokeDynamicObfVisitor extends InvokeDynamicObfVisitor {
                     String className = Utils.getRandomMember(Config.exceptions).getName();
 
                     LabelNode l = new LabelNode();
-                    int key = Utils.r.nextInt(126) + 1;
+                    int key = Utils.getRandomSafeLineNumber();
                     insnList.add(l);
                     insnList.add(new LineNumberNode(key, l));
                     insnList.add(new TypeInsnNode(Opcodes.NEW, className.replace(".", "/")));

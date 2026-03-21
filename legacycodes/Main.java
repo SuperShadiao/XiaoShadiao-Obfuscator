@@ -4200,7 +4200,7 @@ class testMain {
 
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES + ClassWriter.COMPUTE_MAXS);
 
-        cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER, "test", null, "java/lang/Object", null);
+        cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER, "asmtest", null, "java/lang/Object", null);
 
         mv = cw.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "print", "(I)V", null, new String[] {"java/lang/Exception"});
         // mv.visitParameter("草泥马", 0);

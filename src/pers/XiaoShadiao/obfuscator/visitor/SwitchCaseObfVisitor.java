@@ -25,6 +25,7 @@ public class SwitchCaseObfVisitor extends CtrlFlowObfVisitor {
             "恭听太阳的轰鸣",
             "恭听月亮的轰鸣",
             "三月之髓尽在我手, 此为, 拟月之坠陨!",
+
     };
     public static final String[] fun2 = new String[] {
             "https://b23.tv/BV16HPsezEgp",

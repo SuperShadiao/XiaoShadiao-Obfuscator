@@ -95,7 +95,7 @@ public class ThrowableStringObfVisitor extends SimpleStringObfVisitor {
                 char[] chars = s.toCharArray();
                 char[] chars2 = className.toCharArray();
 
-                int key = Utils.r.nextInt(126) + 1;
+                int key = Utils.getRandomSafeLineNumber();
                 int key3 = 0;
 
                 int key2 = Utils.spawnRandomChar().charAt(0);

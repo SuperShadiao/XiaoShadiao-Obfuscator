@@ -11,5 +11,6 @@
     <orderEntry type="library" name="bcel-6.6.1" level="project" />
     <orderEntry type="library" name="commons-lang3-3.17.0" level="project" />
     <orderEntry type="library" name="zip4j-2.11.5-sources" level="project" />
+    <orderEntry type="library" name="gson-2.2.4 (4)" level="project" />
   </component>
 </module>

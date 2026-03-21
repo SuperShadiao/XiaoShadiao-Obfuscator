@@ -3,14 +3,9 @@ package pers.XiaoShadiao.obfuscator.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.invoke.ConstantCallSite;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.invoke.MethodType;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
@@ -137,6 +132,10 @@ public class Utils {
     public static String getRandomNameFromMap() {
         if(Config.remapStrings == null || Config.remapStrings.length == 0) return UnicodeNameGenerator.generateRandomName(20);
         return getRandomMember(Config.remapStrings);
+    }
+
+    public static int getRandomSafeLineNumber() {
+        return r.nextInt(126) + 1;
     }
 
     public static class UnicodeNameGenerator {
