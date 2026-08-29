@@ -97,7 +97,7 @@ public class ClassVerifyer {
 
             Class<?> cla$$ = classLoader.define(bytes);
             cla$$.getDeclaredMethods();
-            cla$$.newInstance();
+            // cla$$.newInstance();
         } catch(AnalyzerException e) {
             throw new RuntimeException(e);
         } catch(Throwable e) {

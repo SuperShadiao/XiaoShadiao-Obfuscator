@@ -22,6 +22,7 @@ public enum VisitorFactory implements IVisitorFactory, ICommandExecutor {
     SOFCrasherObfVistor("SOFCrasher", "", "尝试令反编译器发生SOF异常", SOFCrasherObfVistor::new, SOFCrasherObfVistor.class),
     MethodThrowableSignRemoverObfVisitor("removeMethodThrows", "", "移除方法体右边的throws语句", MethodThrowableSignRemoverObfVisitor::new, MethodThrowableSignRemoverObfVisitor.class),
     SyntheticFlag("syntheticFlag", "(false/true)", "对所有方法和字段添加Synthetic和Bridge访问标志, 以使部分反编译器不会显示这些方法和字段, 使用参数true来添加一些玩笑字段, 默认true", SyntheticBridgeApplyerObfVisitor::new, SyntheticBridgeApplyerObfVisitor.class),
+    AttributeBreaker("attributeBreaker", "", "破坏类的一些东西...可能需要你使用-dontVerify了 (思考)", AttributeBreakerVisitor::new, AttributeBreakerVisitor.class),
     ;
 
     public interface Creator<T extends IVisitor> {

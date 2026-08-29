@@ -3,6 +3,8 @@ package pers.XiaoShadiao.obfuscator.console;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Locale;
 
 public class SyncPrintStream extends PrintStream {

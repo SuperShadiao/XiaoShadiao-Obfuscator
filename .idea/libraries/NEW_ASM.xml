@@ -6,6 +6,8 @@
     <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/NEW_ASM" />
+      <root url="jar://$PROJECT_DIR$/NEW_ASM/asm-9.10.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/NEW_ASM/asm-9.10.1-sources.jar!/" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/NEW_ASM" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/NEW_ASM" recursive="false" type="SOURCES" />
